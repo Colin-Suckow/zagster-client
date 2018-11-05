@@ -1,5 +1,12 @@
 $(updateView)
 
+var BASE_URL = "https://zagster-service.herokuapp.com"
+
 function updateView() {
-  alert("Ran update alert 2");
+  $.getJSON(BASE_URL + "/rides/count", updateRideCount);
+}
+
+function updateRideCount(data) {
+  numberOfRides = data.count;
+  $("h1#rideCount").html(numberOfRides);
 }
