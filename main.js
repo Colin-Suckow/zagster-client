@@ -1,5 +1,5 @@
 $(updateView)
 
 function updateView() {
-  alert("Ran update alert");
+  alert("Ran update alert 2");
 }
