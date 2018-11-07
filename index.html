@@ -9,6 +9,8 @@
       src="https://code.jquery.com/jquery-3.3.1.min.js"
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
       crossorigin="anonymous"></script>
+      <script src="scripts/countUp.js"></script>
+    <script src="scripts/countUp-jquery.js"></script>
     <script src="main.js"></script>
     
     <title>Zagster</title>
@@ -26,7 +28,7 @@
             <div class="card">
                 <div class="card-body">
                   <h3 class="card-title">Total Rides</h3>
-                  <h1 class="card-text" id="rideCount">-</h1>
+                  <h1 class="card-text numscroller" id="rideCount" data-min='1' data-max='1000' data-delay='5' data-increment='10'>-</h1>
                 </div>
               </div>
         </div>
