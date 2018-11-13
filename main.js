@@ -4,9 +4,11 @@ var BASE_URL = "https://zagster-service.herokuapp.com"
 
 var map;
 
+var MAPBOX_KEY = 'pk.eyJ1IjoiY3N1Y2tvdyIsImEiOiJjam56a3U2YzgxaGloM2tramJzand1aDhjIn0.GmUgLUmgtNtIduFrxCnfTg';
+
 function updateView() {
 
-  mapboxgl.accessToken = 'pk.eyJ1IjoiY3N1Y2tvdyIsImEiOiJjam56a3U2YzgxaGloM2tramJzand1aDhjIn0.GmUgLUmgtNtIduFrxCnfTg';
+  mapboxgl.accessToken = MAPBOX_KEY;
   
   map = new mapboxgl.Map({
       container: 'map',
@@ -26,9 +28,9 @@ function mapTest(data) {
   var end_lat = data.end_lat;
   var end_lon = data.end_lon;
 
-  var request = `https://api.mapbox.com/directions/v5/mapbox/driving/${start_lon}%2C${start_lat}%3B${end_lon}%2C${end_lat}.json?access_token=pk.eyJ1IjoiY3N1Y2tvdyIsImEiOiJjam56a3U2YzgxaGloM2tramJzand1aDhjIn0.GmUgLUmgtNtIduFrxCnfTg&geometries=geojson`
+  var requestUrl = `https://api.mapbox.com/directions/v5/mapbox/driving/${start_lon}%2C${start_lat}%3B${end_lon}%2C${end_lat}.json?access_token=${MAPBOX_KEY}&geometries=geojson`
   console.log(request);
-  var mapLine = $.getJSON(request, loadMapData)
+  var mapLine = $.getJSON(requestUrl, loadMapData)
 }
 
 function loadMapData(data) {
