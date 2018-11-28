@@ -1,0 +1,58 @@
+<html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="description" content="Colin Suckow's portfolio site">
+            <meta name="author" content="Colin Suckow">
+        
+            <title>Colin Suckow</title>
+        
+            <!-- Bootstrap core CSS -->
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+            <!-- Custom styles for this template -->
+            <link href="style.css" rel="stylesheet">
+        </head>
+
+        <body>
+            <h1 class="display-1 text-center">About</h1>
+            <p class = "lead text-center">Zagmap is a mapping application using mapbox, node and express to display data from a bike sharing service</p>
+            
+            <div class="container">
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <h1 class="display-4 text-center">Client</h1>
+                            <p>
+                                Zagmap's client is a basic javascript page that uses http requests to
+                                retrieve data from the server. Mapbox's mapbox-gl-js library was used
+                                to display the map and the route lines. Routes are determined by
+                                using the start and end location of each bike ride, and feeding them into
+                                mapbox's bike directions api. The results from this call are then displayed on
+                                the map using mapbox-gl-js's layer system.
+                            </p>
+                            <a href="https://github.com/Colin-Suckow/zagster-client">Source</a>
+                        </div>
+        
+                        <div class="col-sm">
+                                <h1 class="display-4 text-center">Server</h1>
+                                <p>
+                                    Zagmap's server provides an http interface to a postgres database holding
+                                    the bike data. The server is runs on top of node.js and uses express to handle requests.
+                                    Both the server and database are hosted on heroku. Once a date
+                                    is selected, zagmap client requests two data objects, the ride cordinates for 
+                                    a specific day, and the number of rides on those days. The server application interprets
+                                    the query from the http request, and uses a standard sql query to retrieve and return the requested
+                                    data. 
+                                    <a href="https://github.com/osu-cascades/cs160-zagster-service">The server application is forked from Yong Bakos's implementation.</a>
+                                </p>
+                                <a href="https://github.com/Colin-Suckow/cs160-zagster-service">Source</a>
+                        </div>
+                    </div>
+        
+                </div>
+                <footer>
+                    <div class="footer-copyright text-center py-3">© 2018 Copyright: Colin Suckow</div>
+                </footer>
+        </body>
+        
+</html>
