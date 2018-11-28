@@ -1,47 +1,74 @@
-$(updateView)
+$(init)
 
-var BASE_URL = "https://zagster-service.herokuapp.com"
+var BASE_URL = "https://cs-zagster-data.herokuapp.com"      //"https://zagster-service.herokuapp.com"
 
 var map;
 
+var routeIndex = 0;
+
+
+
 var MAPBOX_KEY = 'pk.eyJ1IjoiY3N1Y2tvdyIsImEiOiJjam56a3U2YzgxaGloM2tramJzand1aDhjIn0.GmUgLUmgtNtIduFrxCnfTg';
 
-function updateView() {
+function init() {
+
+    var mDatepicker = $('#datepicker');
+    mDatepicker.datepicker();
+    mDatepicker.datepicker().on('changeDate', (e) => {
+        var isoDate = e.date.toISOString().slice(0, 10).replace('T', '');
+        console.log(isoDate);
+        clearRoutes();
+        reloadRoutes(isoDate);
+    })
 
   mapboxgl.accessToken = MAPBOX_KEY;
   
   map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/light-v9',
-      center: [-121.321807, 44.056626],
-      zoom: 13
+      center: [-121.321807, 44.051521],
+      zoom: 14
   });
 
-  $.getJSON(BASE_URL + "/rides/example", mapTest);
-
-
+  map.on('load', () => {
+    loadStationPoints();
+  })
 }
 
-function mapTest(data) {
-  var start_lat = data.start_lat;
-  var start_lon = data.start_lon;
-  var end_lat = data.end_lat;
-  var end_lon = data.end_lon;
-
-  var requestUrl = `https://api.mapbox.com/directions/v5/mapbox/cycling/${start_lon}%2C${start_lat}%3B${end_lon}%2C${end_lat}.json?access_token=${MAPBOX_KEY}&geometries=geojson`
-  console.log(requestUrl);
-  var mapLine = $.getJSON(requestUrl, loadMapData)
+function reloadRoutes(date) {
+    $.getJSON(BASE_URL + "/rides/day?date=" + date, loadRoutes);
 }
 
-function loadMapData(data) {
+function clearRoutes() {
+    map.style.stylesheet.layers.forEach(function(layer) {
+        if (layer.id.startsWith("bikeRoute")) {
+            map.removeLayer(layer.id);
+        }
+    });
+}
+
+function loadRoutes(data) {
+    console.log(data);
+    if(data == []) {
+        console.log("No data")
+    } else {
+        for(var i = 0; i < data.length; i++) {
+            loadRoute(data[i]);
+        }
+    }
+  
+}
+
+function loadMapData(data, index) {
 
   var routeData = data.routes[0].geometry;
+  routeIndex++;
 
   console.log(routeData);
   
   //Add test route line
   map.addLayer({
-    "id": "route",
+    "id": "bikeRoute" + routeIndex,
     "type": "line",
     "source": {
       "type": "geojson",
@@ -57,6 +84,21 @@ function loadMapData(data) {
   }
   });
 
+}
+
+function loadRoute(row) {
+var start_lat = row.start_lat;
+  var start_lon = row.start_lon;
+  var end_lat = row.end_lat;
+  var end_lon = row.end_lon;
+
+  var requestUrl = `https://api.mapbox.com/directions/v5/mapbox/cycling/${start_lon}%2C${start_lat}%3B${end_lon}%2C${end_lat}.json?access_token=${MAPBOX_KEY}&geometries=geojson`
+  console.log(requestUrl);
+  $.getJSON(requestUrl, loadMapData)
+}
+
+function loadStationPoints() {
+    
   //Add station points
   map.addLayer({
     "id": "points",
@@ -156,5 +198,4 @@ function loadMapData(data) {
         "text-anchor": "top"
     }
 });
-
 }
