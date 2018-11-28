@@ -14,7 +14,6 @@ function init() {
     mDatepicker.datepicker();
     mDatepicker.datepicker().on('changeDate', (e) => {
         var isoDate = e.date.toISOString().slice(0, 10).replace('T', '');
-        console.log(isoDate);
         clearRoutes();
         showDataAlert(false);
         reloadRoutes(isoDate);
@@ -36,6 +35,11 @@ function init() {
 
 function reloadRoutes(date) {
     $.getJSON(BASE_URL + "/rides/day?date=" + date, loadRoutes);
+    $.getJSON(BASE_URL + "/rides/day/count?date=" + date, updateCountText);
+}
+
+function updateCountText(data) {
+    $('#ride-count-text').text(data[0].count.toString() + " rides")
 }
 
 function clearRoutes() {
@@ -48,7 +52,6 @@ function clearRoutes() {
 
 function loadRoutes(data) {
     if(data.length == 0) {
-        console.log("No data")
         showDataAlert(true);
     } else {
         for(var i = 0; i < data.length; i++) {
@@ -61,10 +64,8 @@ function loadRoutes(data) {
 function showDataAlert(enable) {
     var warning = $('#data-alert');
     if(enable) {
-        console.log('showing alert...');
         warning.show();
     } else {
-        console.log('hiding alert');
         warning.hide();
     }
 }
@@ -100,7 +101,6 @@ var start_lat = row.start_lat;
   var end_lon = row.end_lon;
 
   var requestUrl = `https://api.mapbox.com/directions/v5/mapbox/cycling/${start_lon}%2C${start_lat}%3B${end_lon}%2C${end_lat}.json?access_token=${MAPBOX_KEY}&geometries=geojson`
-  console.log(requestUrl);
   $.getJSON(requestUrl, loadMapData)
 }
 
