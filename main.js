@@ -1,12 +1,10 @@
 $(init)
 
-var BASE_URL = "https://cs-zagster-data.herokuapp.com"      //"https://zagster-service.herokuapp.com"
+var BASE_URL = "https://cs-zagster-data.herokuapp.com" 
 
 var map;
 
 var routeIndex = 0;
-
-
 
 var MAPBOX_KEY = 'pk.eyJ1IjoiY3N1Y2tvdyIsImEiOiJjam56a3U2YzgxaGloM2tramJzand1aDhjIn0.GmUgLUmgtNtIduFrxCnfTg';
 
@@ -18,6 +16,7 @@ function init() {
         var isoDate = e.date.toISOString().slice(0, 10).replace('T', '');
         console.log(isoDate);
         clearRoutes();
+        showDataAlert(false);
         reloadRoutes(isoDate);
     })
 
@@ -40,7 +39,7 @@ function reloadRoutes(date) {
 }
 
 function clearRoutes() {
-    map.style.stylesheet.layers.forEach(function(layer) {
+    map.getStyle().layers.forEach(function(layer) {
         if (layer.id.startsWith("bikeRoute")) {
             map.removeLayer(layer.id);
         }
@@ -48,9 +47,9 @@ function clearRoutes() {
 }
 
 function loadRoutes(data) {
-    console.log(data);
-    if(data == []) {
+    if(data.length == 0) {
         console.log("No data")
+        showDataAlert(true);
     } else {
         for(var i = 0; i < data.length; i++) {
             loadRoute(data[i]);
@@ -59,13 +58,21 @@ function loadRoutes(data) {
   
 }
 
+function showDataAlert(enable) {
+    var warning = $('#data-alert');
+    if(enable) {
+        console.log('showing alert...');
+        warning.show();
+    } else {
+        console.log('hiding alert');
+        warning.hide();
+    }
+}
+
 function loadMapData(data, index) {
 
   var routeData = data.routes[0].geometry;
   routeIndex++;
-
-  console.log(routeData);
-  
   //Add test route line
   map.addLayer({
     "id": "bikeRoute" + routeIndex,
