@@ -39,7 +39,9 @@ function reloadRoutes(date) {
 }
 
 function updateCountText(data) {
-    $('#ride-count-text').text(data[0].count.toString() + " rides")
+    var rideString = " rides";
+    if(data[0].count == 1) rideString = " ride";
+    $('#ride-count-text').text(data[0].count.toString() + rideString)
 }
 
 function clearRoutes() {
